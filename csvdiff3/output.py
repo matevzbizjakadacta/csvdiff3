@@ -83,7 +83,7 @@ class OutputDriver():
 class Merge3OutputDriver(OutputDriver):
     def __init__(self, *args, **kwargs):
         OutputDriver.__init__(self, *args, **kwargs)
-        self.writer = csv.writer(self.stream, **self.dialect_args)
+        self.writer = csv.writer(self.stream, delimiter="\t", **self.dialect_args)
 
     def emit_text(self, state, line_LCA, line_A, line_B, text):
         # Do nothing if there is no text in the merged output

@@ -130,7 +130,7 @@ class CSVLineReader:
 
     def __init__(self, stream, **args):
         self.file = FileReader(stream)
-        self.reader = csv.reader(self.file, **args)
+        self.reader = csv.reader(self.file, delimiter="\t", **args)
 
     def __iter__(self):
         for row in self.reader:
@@ -256,7 +256,7 @@ class CSVFile:
 
     @staticmethod
     def open(filename, key, **args):
-        with open(filename, "rt") as file:
+        with open(filename, "rt", encoding="utf8") as file:
             return CSVFile(file, key, filename, **args)
 
     def dump(self, id, prefix):
@@ -266,7 +266,7 @@ class CSVFile:
         stream = self.reader.reader.file.stream
         logging.debug(f"Dumping file {id} to {filename}")
         stream.seek(0)
-        with open(filename, "wt") as outfile:
+        with open(filename, "wt", encoding="utf8") as outfile:
             shutil.copyfileobj(stream, outfile)
 
 class Cursor:

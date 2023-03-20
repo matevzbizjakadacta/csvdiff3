@@ -14,9 +14,9 @@ from .file import CSVKeyError
 
 @click.command()
 
-@click.argument("filename_LCA", type=click.File("rt"))
-@click.argument("filename_A", type=click.File("rt"))
-@click.argument("filename_B", type=click.File("rt"))
+@click.argument("filename_LCA", type=click.File("rt", "utf-8"))
+@click.argument("filename_A", type=click.File("rt", "utf-8"))
+@click.argument("filename_B", type=click.File("rt", "utf-8"))
 @click.option("-c", "--colour/--nocolour", is_flag = True,
               default = None,
               help = "Colourise conflicts in output (default is True " + \
@@ -59,7 +59,7 @@ def cli_merge3(filename_lca, filename_a, filename_b,
 
     if output_file:
 
-        with tempfile.NamedTemporaryFile("wt") as temp_output:
+        with tempfile.NamedTemporaryFile("wt", encoding="utf-8", delete=False) as temp_output:
             try:
                 rc = merge3(filename_lca, filename_a, filename_b, key,
                             output = temp_output,
@@ -76,6 +76,7 @@ def cli_merge3(filename_lca, filename_a, filename_b,
 
             temp_name = temp_output.name
             temp_output.flush()
+            temp_output.close()
             shutil.copyfile(temp_name, output_file)
 
     else:
